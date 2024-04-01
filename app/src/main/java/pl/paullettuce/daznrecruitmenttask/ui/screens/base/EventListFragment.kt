@@ -63,6 +63,12 @@ abstract class EventListFragment<T : EventListFragmentViewModel> : Fragment() {
 
     protected abstract fun onItemClick(event: ViewSportEvent)
 
+    private fun prepareList() {
+        setupRecyclerView()
+        setupSwipeRefresh()
+        setupNewItemsPrompt()
+    }
+
     private fun observeState() {
         viewModel.viewStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
@@ -103,12 +109,6 @@ abstract class EventListFragment<T : EventListFragmentViewModel> : Fragment() {
         toast = requireContext().toast(errorType.headerRes).also { it.show() }
     }
 
-    private fun prepareList() {
-        setupRecyclerView()
-        setupSwipeRefresh()
-        setupNewItemsPrompt()
-    }
-
     private fun setupRecyclerView() = with(binding.eventsRecyclerView) {
         adapter = eventsAdapter
         layoutManager = LinearLayoutManager(requireContext())
@@ -125,7 +125,12 @@ abstract class EventListFragment<T : EventListFragmentViewModel> : Fragment() {
 
     private fun setupNewItemsPrompt() = with(binding.eventsRecyclerView) {
         eventsAdapter.onItemsInserted { insertIndex, insertedItemsCount ->
-            if (areAddedItemsHidden(scrollPosition(), insertIndex, insertedItemsCount)) {
+            if (areAddedItemsAboveScrollPosition(
+                    scrollPosition(),
+                    insertIndex,
+                    insertedItemsCount
+                )
+            ) {
                 showNewItemsPrompt()
                 binding.newItemsButton.setOnClickListener {
                     smoothScrollToPosition(insertIndex)
@@ -136,7 +141,7 @@ abstract class EventListFragment<T : EventListFragmentViewModel> : Fragment() {
         addOnScrollUpListener { hideNewItemsPrompt() }
     }
 
-    private fun areAddedItemsHidden(
+    private fun areAddedItemsAboveScrollPosition(
         scrollPosition: Int,
         positionStart: Int,
         insertedItemsCount: Int

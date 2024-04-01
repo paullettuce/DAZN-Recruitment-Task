@@ -4,9 +4,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import pl.paullettuce.daznrecruitmenttask.domain.usecase.GetScheduledUseCase
-import pl.paullettuce.daznrecruitmenttask.ui.filter.FilteringCriteria
-import pl.paullettuce.daznrecruitmenttask.ui.filter.FilteringCriteria.TimeRange.Tomorrow
-import pl.paullettuce.daznrecruitmenttask.ui.model.ViewSportEventMapper
+import pl.paullettuce.daznrecruitmenttask.ui.filter.EventFilteringCriteria
+import pl.paullettuce.daznrecruitmenttask.ui.filter.EventFilteringCriteria.TimeRange.Tomorrow
+import pl.paullettuce.daznrecruitmenttask.ui.model.ViewSportEventListMapper
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState.Data
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState.Error
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState.Loading
@@ -17,21 +17,17 @@ import javax.inject.Inject
 @HiltViewModel
 class ScheduleFragmentViewModel @Inject constructor(
     private val getScheduledUseCase: GetScheduledUseCase,
-    private val viewSportEventMapper: ViewSportEventMapper
-) : EventListFragmentViewModel() {
+    viewSportEventListMapper: ViewSportEventListMapper
+) : EventListFragmentViewModel(viewSportEventListMapper) {
 
-    override val filteringCriteria: FilteringCriteria = Tomorrow
+    override val filteringCriteria: EventFilteringCriteria = Tomorrow
 
     override fun loadData() {
         getScheduledUseCase()
             .doOnSubscribe { _viewStateLiveData.postValue(Loading) }
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation()) // map on computation() thread
-            .map {
-                viewSportEventMapper.toViewSportEvents(it)
-                    .performFiltering()
-                    .performSorting()
-            }
+            .prepareDataForView()
             .repeatWhen { completed -> completed.delay(30, TimeUnit.SECONDS) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

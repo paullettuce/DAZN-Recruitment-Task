@@ -3,28 +3,33 @@ package pl.paullettuce.daznrecruitmenttask.ui.screens.base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import pl.paullettuce.daznrecruitmenttask.domain.exceptions.NoNetworkException
 import pl.paullettuce.daznrecruitmenttask.domain.exceptions.ServerException
-import pl.paullettuce.daznrecruitmenttask.ui.filter.FilteringCriteria
-import pl.paullettuce.daznrecruitmenttask.ui.filter.FilteringCriteria.TimeRange.None
+import pl.paullettuce.daznrecruitmenttask.domain.model.SportEvent
+import pl.paullettuce.daznrecruitmenttask.ui.filter.EventFilteringCriteria
+import pl.paullettuce.daznrecruitmenttask.ui.filter.EventFilteringCriteria.TimeRange.None
 import pl.paullettuce.daznrecruitmenttask.ui.model.ErrorType.NoNetwork
 import pl.paullettuce.daznrecruitmenttask.ui.model.ErrorType.Other
 import pl.paullettuce.daznrecruitmenttask.ui.model.ErrorType.ServerError
-import pl.paullettuce.daznrecruitmenttask.ui.model.ViewSportEvent
+import pl.paullettuce.daznrecruitmenttask.ui.model.ViewSportEventListMapper
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState
-import pl.paullettuce.daznrecruitmenttask.ui.sort.DateAscending
+import pl.paullettuce.daznrecruitmenttask.ui.sort.EventSortingCriteria
+import pl.paullettuce.daznrecruitmenttask.ui.sort.EventSortingCriteria.DateAscending
+import pl.paullettuce.daznrecruitmenttask.ui.utils.performFiltering
+import pl.paullettuce.daznrecruitmenttask.ui.utils.performSorting
 
-typealias SortingCriteria = Comparator<ViewSportEvent>
-
-abstract class EventListFragmentViewModel : ViewModel() {
+abstract class EventListFragmentViewModel(
+    private val viewSportEventListMapper: ViewSportEventListMapper
+) : ViewModel() {
 
     val viewStateLiveData: LiveData<ViewState>
         get() = _viewStateLiveData
 
-    protected open val filteringCriteria: FilteringCriteria = None
-    protected open val sortingCriteria: SortingCriteria = DateAscending
+    protected open val filteringCriteria: EventFilteringCriteria = None
+    protected open val sortingCriteria: EventSortingCriteria = DateAscending
     protected val _viewStateLiveData = MutableLiveData<ViewState>()
     private val disposables = CompositeDisposable()
 
@@ -48,9 +53,11 @@ abstract class EventListFragmentViewModel : ViewModel() {
         loadData()
     }
 
-    protected fun List<ViewSportEvent>.performFiltering() = filteredWith(filteringCriteria)
-
-    protected fun List<ViewSportEvent>.performSorting() = sortedWith(sortingCriteria)
+    protected fun Single<List<SportEvent>>.prepareDataForView() = map {
+        viewSportEventListMapper.map(it)
+            .performFiltering(filteringCriteria)
+            .performSorting(sortingCriteria)
+    }
 
     protected fun Throwable.mapToErrorType() = when (this) {
         is NoNetworkException -> NoNetwork
@@ -62,6 +69,4 @@ abstract class EventListFragmentViewModel : ViewModel() {
         disposables.add(this)
     }
 
-    private fun List<ViewSportEvent>.filteredWith(filteringCriteria: FilteringCriteria) =
-        filter { filteringCriteria.isMatching(it) }
 }

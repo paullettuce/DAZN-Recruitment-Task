@@ -1,30 +1,24 @@
 package pl.paullettuce.daznrecruitmenttask.ui.model
 
-import android.content.Context
-import android.text.format.DateUtils
-import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.paullettuce.daznrecruitmenttask.domain.model.SportEvent
+import pl.paullettuce.daznrecruitmenttask.domain.model.mapper.Mapper
+import pl.paullettuce.daznrecruitmenttask.domain.model.mapper.SimpleListMapper
 import javax.inject.Inject
 
-class ViewSportEventMapper @Inject constructor(@ApplicationContext private val context: Context) {
+class ViewSportEventMapper @Inject constructor(
+    private val friendlyDateMapper: FriendlyDateMapper
+) : Mapper<SportEvent, ViewSportEvent> {
 
-    fun toViewSportEvents(sportEvents: List<SportEvent>) = sportEvents.map { toViewSportEvent(it) }
-
-    private fun toViewSportEvent(sportEvent: SportEvent) = ViewSportEvent(
-        sportEvent.id,
-        sportEvent.title,
-        sportEvent.subtitle,
-        sportEvent.timestamp,
-        sportEvent.timestamp.toFriendlyDate(),
-        sportEvent.imageUrl,
-        sportEvent.videoUrl
+    override fun map(input: SportEvent) = ViewSportEvent(
+        input.id,
+        input.title,
+        input.subtitle,
+        input.timestamp,
+        friendlyDateMapper.map(input.timestamp),
+        input.imageUrl,
+        input.videoUrl
     )
-
-    private fun Long.toFriendlyDate() = DateUtils.getRelativeDateTimeString(
-        context,
-        this,
-        DateUtils.DAY_IN_MILLIS, // only hours, no minutes
-        DateUtils.WEEK_IN_MILLIS, // up to 7 days, in or ago
-        0
-    ).toString()
 }
+
+class ViewSportEventListMapper @Inject constructor(itemMapper: ViewSportEventMapper) :
+    SimpleListMapper<SportEvent, ViewSportEvent>(itemMapper)

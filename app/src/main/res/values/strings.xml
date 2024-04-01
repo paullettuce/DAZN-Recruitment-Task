@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">DAZN Recruitment Task</string>
+    <string name="events">Events</string>
+    <string name="schedule">Schedule</string>
+    <string name="try_again">Try again</string>
+    <string name="new_items">new events</string>
+
+    // Errors
+    <string name="error_header_no_internet">No internet connection</string>
+    <string name="error_message_no_internet">Please check your internet connection and try again.</string>
+    <string name="error_header_server">Server error</string>
+    <string name="error_message_server">An unexpected error occurred. Please try again later.</string>
+    <string name="error_header_generic">Error</string>
+    <string name="error_message_generic">An error occurred. Please try again later.</string>
+    <string name="error_header_filtering">No results found</string>
+    <string name="error_message_filtering">No items match the provided filters. Please adjust them and try again.</string>
+</resources>

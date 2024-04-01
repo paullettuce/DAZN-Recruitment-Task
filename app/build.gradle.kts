@@ -1,5 +1,5 @@
 plugins {
-    kotlin("kapt")
+    alias(libs.plugins.kapt)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)

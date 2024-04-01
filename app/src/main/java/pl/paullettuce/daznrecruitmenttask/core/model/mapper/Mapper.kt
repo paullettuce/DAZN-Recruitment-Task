@@ -1,4 +1,4 @@
-package pl.paullettuce.daznrecruitmenttask.domain.model.mapper
+package pl.paullettuce.daznrecruitmenttask.core.model.mapper
 
 interface Mapper<I, O> {
     fun map(input: I): O

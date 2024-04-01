@@ -1,8 +1,9 @@
-package pl.paullettuce.daznrecruitmenttask.ui.model
+package pl.paullettuce.daznrecruitmenttask.ui.model.mapper
 
+import pl.paullettuce.daznrecruitmenttask.core.model.mapper.Mapper
+import pl.paullettuce.daznrecruitmenttask.core.model.mapper.SimpleListMapper
 import pl.paullettuce.daznrecruitmenttask.domain.model.SportEvent
-import pl.paullettuce.daznrecruitmenttask.domain.model.mapper.Mapper
-import pl.paullettuce.daznrecruitmenttask.domain.model.mapper.SimpleListMapper
+import pl.paullettuce.daznrecruitmenttask.ui.model.ViewSportEvent
 import javax.inject.Inject
 
 class ViewSportEventMapper @Inject constructor(

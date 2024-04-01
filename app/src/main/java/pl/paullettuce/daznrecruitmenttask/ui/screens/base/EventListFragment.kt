@@ -10,8 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import pl.paullettuce.daznrecruitmenttask.databinding.FragmentEventListBinding
 import pl.paullettuce.daznrecruitmenttask.ui.list.EventListAdapter
-import pl.paullettuce.daznrecruitmenttask.ui.model.ErrorType
-import pl.paullettuce.daznrecruitmenttask.ui.model.ErrorType.FilteringError
+import pl.paullettuce.daznrecruitmenttask.ui.model.ViewError
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewSportEvent
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState.Data
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState.Error
@@ -73,7 +72,7 @@ abstract class EventListFragment<T : EventListFragmentViewModel> : Fragment() {
         viewModel.viewStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is Data -> updateList(it.events)
-                is Error -> dispatchAndDisplayError(it.errorType)
+                is Error -> dispatchAndDisplayError(it.viewError)
                 is Loading -> showLoading().also { hideErrorScreen() }
             }
         }
@@ -83,19 +82,18 @@ abstract class EventListFragment<T : EventListFragmentViewModel> : Fragment() {
         hideErrorScreen()
         hideLoading()
         eventsAdapter.submitList(events)
-        if (events.isEmpty()) showErrorScreen(FilteringError) // show "No results found"
     }
 
-    private fun dispatchAndDisplayError(errorType: ErrorType) {
+    private fun dispatchAndDisplayError(viewError: ViewError) {
         hideLoading()
         if (eventsAdapter.itemCount > 0 || binding.errorScreen.isVisible) {
-            showToast(errorType)
+            showToast(viewError)
         } else {
-            showErrorScreen(errorType)
+            showErrorScreen(viewError)
         }
     }
 
-    private fun showErrorScreen(error: ErrorType) = with(binding) {
+    private fun showErrorScreen(error: ViewError) = with(binding) {
         errorScreen.show()
         errorHeader.setText(error.headerRes)
         errorMessage.setText(error.messageRes)
@@ -104,9 +102,9 @@ abstract class EventListFragment<T : EventListFragmentViewModel> : Fragment() {
         }
     }
 
-    private fun showToast(errorType: ErrorType) {
+    private fun showToast(viewError: ViewError) {
         toast?.cancel() // avoid stacking toasts
-        toast = requireContext().toast(errorType.headerRes).also { it.show() }
+        toast = requireContext().toast(viewError.headerRes).also { it.show() }
     }
 
     private fun setupRecyclerView() = with(binding.eventsRecyclerView) {

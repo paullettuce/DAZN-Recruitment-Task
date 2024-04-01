@@ -4,7 +4,7 @@ import io.reactivex.rxjava3.core.Single
 import pl.paullettuce.daznrecruitmenttask.data.remote.model.mapper.ApiScheduledSportEventListMapper
 import pl.paullettuce.daznrecruitmenttask.data.remote.model.mapper.ApiSportEventListMapper
 import pl.paullettuce.daznrecruitmenttask.data.utils.NetworkManager
-import pl.paullettuce.daznrecruitmenttask.domain.exceptions.NoNetworkException
+import pl.paullettuce.daznrecruitmenttask.domain.model.exceptions.NoNetworkException
 import javax.inject.Inject
 
 class EventsRemoteDataSource @Inject constructor(
@@ -15,6 +15,7 @@ class EventsRemoteDataSource @Inject constructor(
 ) {
 
     fun getEvents() = executeIfNetworkAvailable(apiService.getEvents())
+
         .map { apiSportEventListMapper.map(it) }
 
     fun getScheduled() = executeIfNetworkAvailable(apiService.getScheduled())

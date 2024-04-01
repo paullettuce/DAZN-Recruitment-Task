@@ -1,9 +1,9 @@
-package pl.paullettuce.daznrecruitmenttask.ui.model
+package pl.paullettuce.daznrecruitmenttask.ui.model.mapper
 
 import android.content.Context
 import android.text.format.DateUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
-import pl.paullettuce.daznrecruitmenttask.domain.model.mapper.Mapper
+import pl.paullettuce.daznrecruitmenttask.core.model.mapper.Mapper
 import javax.inject.Inject
 
 class FriendlyDateMapper @Inject constructor(

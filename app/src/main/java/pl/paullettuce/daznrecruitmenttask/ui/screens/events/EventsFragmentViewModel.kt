@@ -5,31 +5,33 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.rxjava3.schedulers.Schedulers.computation
 import io.reactivex.rxjava3.schedulers.Schedulers.io
 import pl.paullettuce.daznrecruitmenttask.domain.usecase.GetEventsUseCase
-import pl.paullettuce.daznrecruitmenttask.ui.model.ViewSportEventListMapper
-import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState.Data
-import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState.Error
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState.Loading
+import pl.paullettuce.daznrecruitmenttask.ui.model.mapper.ViewErrorMapper
+import pl.paullettuce.daznrecruitmenttask.ui.model.mapper.ViewSportEventListMapper
 import pl.paullettuce.daznrecruitmenttask.ui.screens.base.EventListFragmentViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class EventsFragmentViewModel @Inject constructor(
     private val getEventsUseCase: GetEventsUseCase,
-    viewSportEventListMapper: ViewSportEventListMapper
-) : EventListFragmentViewModel(viewSportEventListMapper) {
+    viewSportEventListMapper: ViewSportEventListMapper,
+    viewErrorMapper: ViewErrorMapper
+) : EventListFragmentViewModel(viewSportEventListMapper, viewErrorMapper) {
 
     override fun loadData() {
         getEventsUseCase()
-            .doOnSubscribe { _viewStateLiveData.postValue(Loading) }
+            .doOnSubscribe { updateViewState(Loading) }
             .subscribeOn(io())
             .observeOn(computation()) // map on computation() thread
             .prepareDataForView()
-            .observeOn(mainThread()).subscribe({
-                _viewStateLiveData.postValue(Data(it))
-            }, {
-                _viewStateLiveData.postValue(Error(it.mapToErrorType()))
+            .observeOn(mainThread())
+            .subscribe({ data ->
+                updateViewState(data)
+            }, { error ->
+                updateViewState(error)
             })
             .disposeAutomatically()
     }
+
 }
 

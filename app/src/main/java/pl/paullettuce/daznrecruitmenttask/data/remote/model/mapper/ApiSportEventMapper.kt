@@ -1,9 +1,9 @@
 package pl.paullettuce.daznrecruitmenttask.data.remote.model.mapper
 
+import pl.paullettuce.daznrecruitmenttask.core.model.mapper.Mapper
+import pl.paullettuce.daznrecruitmenttask.core.model.mapper.SimpleListMapper
 import pl.paullettuce.daznrecruitmenttask.data.remote.model.ApiSportEvent
 import pl.paullettuce.daznrecruitmenttask.domain.model.SportEvent
-import pl.paullettuce.daznrecruitmenttask.domain.model.mapper.Mapper
-import pl.paullettuce.daznrecruitmenttask.domain.model.mapper.SimpleListMapper
 import javax.inject.Inject
 
 class ApiSportEventMapper @Inject constructor(

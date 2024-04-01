@@ -11,7 +11,7 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import pl.paullettuce.daznrecruitmenttask.R
 import pl.paullettuce.daznrecruitmenttask.databinding.ActivityPlayerBinding
-import pl.paullettuce.daznrecruitmenttask.ui.model.ErrorType
+import pl.paullettuce.daznrecruitmenttask.ui.model.ViewError
 import pl.paullettuce.daznrecruitmenttask.ui.utils.toast
 
 
@@ -48,8 +48,8 @@ class PlayerActivity : Activity() {
 
     // Absolutely basic error handling
     private fun PlaybackException.mapToErrorType() = when (errorCode) {
-        PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED -> ErrorType.NoNetwork
-        else -> ErrorType.Other
+        PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED -> ViewError.NoNetwork
+        else -> ViewError.UnknownError
     }
 
     companion object {

@@ -1,23 +1,29 @@
 package pl.paullettuce.daznrecruitmenttask.ui.player
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.databinding.DataBindingUtil
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import dagger.hilt.android.AndroidEntryPoint
 import pl.paullettuce.daznrecruitmenttask.R
 import pl.paullettuce.daznrecruitmenttask.databinding.ActivityPlayerBinding
-import pl.paullettuce.daznrecruitmenttask.ui.model.ViewError
+import pl.paullettuce.daznrecruitmenttask.ui.model.mapper.PlayerErrorMapper
 import pl.paullettuce.daznrecruitmenttask.ui.utils.toast
+import javax.inject.Inject
 
 
 private const val VIDEO_URL_KEY = "VIDEO_URL_KEY"
 
-class PlayerActivity : Activity() {
+@AndroidEntryPoint
+class PlayerActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var errorMapper: PlayerErrorMapper
 
     private lateinit var binding: ActivityPlayerBinding
 
@@ -39,17 +45,11 @@ class PlayerActivity : Activity() {
         player.addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
                 super.onPlayerError(error)
-                toast(error.mapToErrorType().headerRes).show()
+                toast(errorMapper.map(error).headerRes).show()
             }
         })
         player.setMediaItem(MediaItem.fromUri(intent.getStringExtra(VIDEO_URL_KEY).orEmpty()))
         player.prepare()
-    }
-
-    // Absolutely basic error handling
-    private fun PlaybackException.mapToErrorType() = when (errorCode) {
-        PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED -> ViewError.NoNetwork
-        else -> ViewError.UnknownError
     }
 
     companion object {

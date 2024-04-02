@@ -4,8 +4,6 @@ The "DAZN Recruitment Task" is an Android app designed with a bottom navigation 
 ## Demo
 https://github.com/paullettuce/DAZN-Recruitment-Task/assets/64195546/7d1375bb-4b39-4b81-8e56-7fbfae878114
 
-
-
 ## Quality Assesment
 ### 1. Requirements and design:
 * General Requirements:
@@ -62,7 +60,7 @@ Apart from that the app operates smoothly and boasts a well-designed interface. 
 ### 7. UAT (kind of) tests results:
 I have shared the APK with a handful of friends, and they found it visually appealing and very smooth. They even said they would embrace it as a part of their digital repertoire if it were real and more finely attuned to their specific sporting preferences:)
 ### 8. Summary and comment:
-In summary, the UI/UX of the app is smooth and graphically appealing. All functional requirements are met. In addition I took the initiative to implement features such as automatic refresh on every screen visit and a new items button after data updates.\
+In summary, the UI/UX of the app is smooth and graphically appealing. All functional requirements are met. In addition I took the initiative to implement features such as automatic refresh on every screen visit, swipe to refresh and a new items button after data updates.\
 While I'm aware of minor UI/UX issues, time constraints prevent me from addressing them. There may be additional issues, but it would require thorough testing and a significant amount of time.\
 I dedicated considerable amount of energy into the events tabs and lists and the player functionality may appear undercooked as a result. From a time perspective, I slightly regret that. The imbalance is my mistake done in development planning phase.\
 While one week is sufficient to create a solid, good-looking app with all functionalities, building a cutting-edge app would require much more time and resources.\

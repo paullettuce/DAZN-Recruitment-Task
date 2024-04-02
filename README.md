@@ -1,6 +1,11 @@
 # DAZN-Recruitment-Task
 The "DAZN Recruitment Task" is an Android app designed with a bottom navigation interface, offering users access to event listings and a tomorrow's schedule that auto-refreshes every 30 seconds. Emphasizing clean architecture it enables users to seamlessly watch associated videos.
 
+## Demo
+https://github.com/paullettuce/DAZN-Recruitment-Task/assets/64195546/7d1375bb-4b39-4b81-8e56-7fbfae878114
+
+
+
 ## Quality Assesment
 ### 1. Requirements and design:
 * General Requirements:

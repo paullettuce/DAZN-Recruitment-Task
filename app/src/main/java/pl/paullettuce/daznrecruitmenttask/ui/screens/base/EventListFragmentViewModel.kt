@@ -9,7 +9,6 @@ import io.reactivex.rxjava3.disposables.Disposable
 import pl.paullettuce.daznrecruitmenttask.domain.model.SportEvent
 import pl.paullettuce.daznrecruitmenttask.ui.filter.EventFilteringCriteria
 import pl.paullettuce.daznrecruitmenttask.ui.filter.EventFilteringCriteria.TimeRange.None
-import pl.paullettuce.daznrecruitmenttask.ui.model.ViewError.FilteringError
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewSportEvent
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState
 import pl.paullettuce.daznrecruitmenttask.ui.model.ViewState.Data
@@ -65,7 +64,7 @@ abstract class EventListFragmentViewModel(
     }
 
     protected fun updateViewState(data: List<ViewSportEvent>) =
-        updateViewState(if (data.isEmpty()) Error(FilteringError) else Data(data))
+        updateViewState(Data(data))
 
     protected fun updateViewState(exception: Throwable) =
         updateViewState(Error(viewErrorMapper.map(exception)))

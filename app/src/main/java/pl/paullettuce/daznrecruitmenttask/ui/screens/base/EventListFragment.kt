@@ -82,6 +82,7 @@ abstract class EventListFragment<T : EventListFragmentViewModel> : Fragment() {
         hideErrorScreen()
         hideLoading()
         eventsAdapter.submitList(events)
+        if (events.isEmpty()) showErrorScreen(ViewError.FilteringError)
     }
 
     private fun dispatchAndDisplayError(viewError: ViewError) {

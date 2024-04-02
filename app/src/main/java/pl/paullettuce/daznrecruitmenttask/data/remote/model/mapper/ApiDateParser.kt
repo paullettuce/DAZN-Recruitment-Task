@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
 
-private const val API_DATE_FORMAT = "yyyy-MM-d'T'H:mm:ss.SSS'Z'"
+const val API_DATE_FORMAT = "yyyy-MM-d'T'H:mm:ss.SSS'Z'"
 
 class ApiDateParser @Inject constructor() : Mapper<String, Long> {
     override fun map(input: String) =

@@ -15,7 +15,6 @@ class EventsRemoteDataSource @Inject constructor(
 ) {
 
     fun getEvents() = executeIfNetworkAvailable(apiService.getEvents())
-
         .map { apiSportEventListMapper.map(it) }
 
     fun getScheduled() = executeIfNetworkAvailable(apiService.getScheduled())

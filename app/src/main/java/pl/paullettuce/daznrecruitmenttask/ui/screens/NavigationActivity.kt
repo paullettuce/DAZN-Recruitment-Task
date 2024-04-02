@@ -1,4 +1,4 @@
-package pl.paullettuce.daznrecruitmenttask
+package pl.paullettuce.daznrecruitmenttask.ui.screens
 
 import android.os.Bundle
 import androidx.annotation.DrawableRes
@@ -10,6 +10,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import pl.paullettuce.daznrecruitmenttask.R
 import pl.paullettuce.daznrecruitmenttask.databinding.ActivityNavigationBinding
 import pl.paullettuce.daznrecruitmenttask.databinding.ItemTabNavigationBinding
 import pl.paullettuce.daznrecruitmenttask.ui.screens.events.EventsFragment

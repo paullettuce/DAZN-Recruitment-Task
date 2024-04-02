@@ -20,5 +20,6 @@ sealed interface EventFilteringCriteria : FilteringCriteria<ViewSportEvent> {
         data object Today : TimeRange(getStartAndEndTimestampsForDayOffset(0))
         data object Tomorrow : TimeRange(getStartAndEndTimestampsForDayOffset(1))
         data object Yesterday : TimeRange(getStartAndEndTimestampsForDayOffset(-1))
+        data class Custom(val start: Long, val end: Long) : TimeRange(start, end)
     }
 }
